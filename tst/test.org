@@ -1,0 +1,26 @@
+#+TITLE: Testing
+#+AUTHOR: Daniel Birket
+#+OPTIONS: toc:nil
+
+Module testing is performed by 'include'ing the module, then calling
+the module with various parameters. The output is initially checked
+manually and the validated output saved as a <name>.cmp file for later
+comparison. Subsequent test output is compared to the validated
+output, automatically.
+
+* Test Runner Script
+
+#+begin_src bash :tangle run-test.bash :shebang #!/usr/local/bin/bash
+  bn=$(basename $1 .in)
+  echo Testing $bn
+  gforth < $bn.in | diff $bn.cmp -
+#+end_src
+
+* Run All Tests Script
+
+#+begin_src bash :tangle run-all.bash :shebang #!/usr/local/bin/bash
+  for test in *.in; do
+      ./run-test.bash $test || exit 1
+  done
+  echo All Tests Passed
+#+end_src

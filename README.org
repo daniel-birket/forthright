@@ -1,0 +1,4 @@
+* Forthright
+
+This repository contains samples of Forth software that I found
+interesting. You are welcome to use anything you find here.

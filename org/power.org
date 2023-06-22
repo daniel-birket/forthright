@@ -1,0 +1,138 @@
+#+TITLE: Integer Power Function: "**"
+#+AUTHOR: Daniel Birket
+#+OPTIONS: toc:nil
+
+This function raises an integer 'n1' to an integer power
+'n2' to produce the result $n3 = n1^{n2}$
+
+It uses the forth word "**", instead of "power".
+
+The algorithm is a version of [[https://en.wikipedia.org/wiki/Exponentiation_by_squaring][exponentiation by squaring]]. It is
+recursive with log2 complexity. That is: its run-time is proportional
+to the log, base 2, of the power.
+
+It is simple enough to implement on the stack, without local variables.
+
+** Input Stack
+
+- n1 : single-precision signed integer
+- n2 : single-precision zero or positive signed integer
+  - if n2 is negative, its absolute value will be used, which will
+    produce the multiplicative inverse (1/x) of the correct answer.
+
+** Output Stack
+
+- n3 : single-precision signed integer
+  
+** Pseudo-code
+
+- n2 = ABS(n2)
+- IF n1 = 0, return n3 = 0
+- IF n1 <> 0 and n2 = 0, return n3 = 1
+- IF n2 = 1, return n3 = n1
+- IF n2 is odd
+  - decrement n2
+  - recurse
+  - multiply by n1
+- IF n2 is even
+  - square n1
+  - half n2
+  - recurse
+
+** Forth
+
+#+begin_src forth :tangle ../src/power.fs
+  : ** ( n1 n2 -- n3 )
+    \ n1 : signed integer
+    \ n2 : zero or positive signed integer
+    \ n3 = n1^n2
+    ( n1 n2 )
+    ABS ( n1 ABS{n2} ) \ force positive power
+    OVER ( n1 n2 n1 )
+    IF ( n1 <> 0 ) ( n1 n2 )
+      DUP ( n1 n2 n2 )
+      IF ( n2 <> 0 ) ( n1 n2 )
+	DUP 1- ( n1 n2 {n2 - 1} )
+	IF ( n2 > 1 ) ( n1 n2 )
+	  DUP 1 AND ( n1 n2 f )
+	  IF ( n1 is odd ) ( n1 n2 )
+	    OVER SWAP ( n1 n1 n2 )
+	    1- ( n1 n1 n2-1 )
+	    RECURSE ( n1 n1^n2-1 )
+	    ,* ( n1^n2 ) \ return
+	  ELSE ( n1 is even ) ( n1 n2 )
+	    SWAP DUP ( n2 n1 n1 )
+	    ,* ( n2 n1^2 )
+	    SWAP ( n1^2 n2 )
+	    2 / ( n1^2 n2/2 )
+	    RECURSE ( n1^n2 ) \ return
+	  THEN
+	ELSE ( n2 = 1 ) ( n1 n2 )
+	  DROP ( n1 ) \ return
+	THEN
+      ELSE ( n2 = 0 ) ( n1 n2 )
+	2DROP 1 ( 1 ) \ return
+      THEN
+    ELSE ( n1 = 0 ) ( n1 n2 )
+      2DROP 0 ( 0 ) \ return
+    THEN ;
+#+end_src
+
+* Tests
+
+#+begin_src forth :tangle ../tst/power.in
+  include ../src/power.fs
+
+  0 0 ** . .s
+  0 1 ** . .s
+  0 2 ** . .s
+  0 3 ** . .s
+  0 4 ** . .s
+  0 5 ** . .s
+  1 0 ** . .s
+  1 1 ** . .s
+  1 2 ** . .s
+  1 3 ** . .s
+  1 4 ** . .s
+  1 5 ** . .s
+  2 0 ** . .s
+  2 1 ** . .s
+  2 2 ** . .s
+  2 3 ** . .s
+  2 4 ** . .s
+  2 5 ** . .s
+  3 0 ** . .s
+  3 1 ** . .s
+  3 2 ** . .s
+  3 3 ** . .s
+  3 4 ** . .s
+  3 5 ** . .s
+  -3 0 ** . .s
+  -3 1 ** . .s
+  -3 2 ** . .s
+  -3 3 ** . .s
+  -3 4 ** . .s
+  -3 5 ** . .s
+  0 -1 ** . .s
+  0 -2 ** . .s
+  0 -3 ** . .s
+  0 -4 ** . .s
+  0 -5 ** . .s
+  1 -1 ** . .s
+  1 -2 ** . .s
+  1 -3 ** . .s
+  1 -4 ** . .s
+  1 -5 ** . .s
+  2 -1 ** . .s
+  2 -2 ** . .s
+  2 -3 ** . .s
+  2 -4 ** . .s
+  2 -5 ** . .s
+  3 -1 ** . .s
+  3 -2 ** . .s
+  3 -3 ** . .s
+  3 -4 ** . .s
+  3 -5 ** . .s
+  2 31 ** . .s
+  2 32 ** . .s
+#+end_src

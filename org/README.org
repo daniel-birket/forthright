@@ -1,0 +1,5 @@
+* Org-Mode "Literate Programming" Docs
+
+This folder contains docs in emacs org-mode format. These files
+document the source code here and "tangle" the <name>.fs and 
+<name>-test.fs files in the "src" and "tst" folders.

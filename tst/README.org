@@ -1,0 +1,6 @@
+* Tests
+
+This folder contains the <name>-test.fs test source files tangled from
+the <name>.org files in the "org" folder.
+
+It also contains test-runner scripts.

@@ -1,0 +1,4 @@
+* Source Folder
+
+This folder contains the <name>.fs source output tangled from the
+<name>.org files in the "org" folder.
