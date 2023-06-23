@@ -1,0 +1,39 @@
+Gforth 0.7.3, Copyright (C) 1995-2008 Free Software Foundation, Inc.
+Gforth comes with ABSOLUTELY NO WARRANTY; for details type `license'
+Type `bye' to exit
+include ../src/gcd-lcm.fs  ok
+  ok
+cr 0 0 GCD . .s 
+0 <0>  ok
+cr 0 1 GCD . .s 
+1 <0>  ok
+cr 1 0 GCD . .s 
+1 <0>  ok
+cr 0 7 GCD . .s 
+7 <0>  ok
+cr 7 0 GCD . .s 
+7 <0>  ok
+cr 49 14 GCD . .s 
+7 <0>  ok
+cr 14 49 GCD . .s 
+7 <0>  ok
+cr 81 123 GCD . .s 
+3 <0>  ok
+cr 123 81 GCD . .s 
+3 <0>  ok
+cr 31 37 41 * * 41 43 47 * * .s GCD . .s 
+<2> 47027 82861 41 <0>  ok
+cr 101 103 107 109 * * * 107 109 113 127 * * * .s GCD . .s 
+<2> 121330189 167375713 11663 <0>  ok
+  ok
+cr 3 5 LCM . .s 
+15 <0>  ok
+cr 9 15 LCM . .s 
+45 <0>  ok
+cr 12 42 LCM . .s 
+84 <0>  ok
+cr 31 37 41 * * 41 43 47 * * .s LCM . .s 
+<2> 47027 82861 95041567 <0>  ok
+cr 101 103 107 109 * * * 107 109 113 127 * * * .s LCM . .s 
+<2> 121330189 167375713 1741209542339 <0>  ok
+

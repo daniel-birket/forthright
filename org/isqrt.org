@@ -1,0 +1,104 @@
+#+TITLE: Integer Square Root
+#+AUTHOR: Daniel Birket
+#+OPTIONS: toc:nil
+
+* ISQRT Integer Square Root
+
+This functions finds the greatest positive integer that is less than
+or equal to the square root of n1. The algorithm uses Heron's method
+( Newton's method applied to $x^2 - a = 0$ ).
+
+To obtain N digits of precision beyond the decimal point, multiply the
+input by N X 100 and then shift the decimal point left N places. For
+example:
+
+To yield 8 digits of precision of the square-root of 2, multiply 2 by
+10000000000000000 to yield 20000000000000000. The square root of that
+is 141421356. Shift the decimal point left 8 places to yield
+1.41421356.
+
+The function is small enough to do with only the stack, without local
+variables.
+
+** Input Stack
+
+- n1 : zero or positive signed integer
+
+** Output Stack
+
+- n2 : largest zero or positive signed integer that is less than or
+  equal to the exact square root.
+
+** Pseudo-code
+
+- if n1 < 0, return -1 (error)
+- if n1 <= 1, return n1 ( 0 or 1 )
+- initial estimate: x0 = n1 / 2
+- BEGIN
+  - update estimate: x1 = (n1/x0 + x0) / 2
+  - test x1 < x0
+- WHILE (x1 < x0)
+  - x0 = x1
+- REPEAT
+
+** Forth
+
+#+begin_src forth :tangle ../src/isqrt.fs :padlines yes
+  : ISQRT-X1 ( n1 xo -- n1 x0 x1 )
+    \ n1 : zero or positive signed integer
+    \ x0 : estimate of square root
+    \ x1 : new estimate of square root
+    2DUP / ( n1 x0 [ n1/x0 ] )
+    OVER ( n1 x0 [ n1/x0 ] x0 )
+    + ( n1 x0 [ n1/x0 + x0 ] )
+    2 / ( n1 x0 [ x1 = [n1/x0+x0]/2 ] ) ;  
+
+  : ISQRT ( n1 -- n2 )
+    \ n1 : zero or positive signed integer
+    \ n2 : largest integer <= SQRT(n1)
+    ( n1 )
+    DUP 0>= ( n1 flag ) \ negative error
+    IF ( n1 >= 0 ) ( n1 )
+      DUP 1 > ( n1 flag ) \ 0, 1 -> 0, 1
+      IF ( n1 > 1 ) ( n1 )
+	DUP 2 / ( n1 x0 ) \ x0 = n1/2
+	BEGIN
+	  ISQRT-X1 ( n1 x0 x1) \ x1 = [n1/x0 + x0]/2
+	  2DUP > ( n1 x0 x1 flag )
+	WHILE ( x0 > x1 ) ( n1 x0 x1 )
+	  NIP ( n1 [x0 = x1] )
+	REPEAT
+	DROP NIP ( x0 )
+      THEN
+    ELSE
+      DROP -1 ( -1 error return )
+    THEN ;
+#+end_src
+
+* Tests
+
+#+begin_src forth :tangle ../tst/isqrt.in :padlines yes
+  include ../src/isqrt.fs
+
+  cr -9 ISQRT . .s
+  cr -1 ISQRT . .s
+  cr 0 ISQRT . .s
+  cr 1 ISQRT . .s
+  cr 2 ISQRT . .s
+  cr 3 ISQRT . .s
+  cr 4 ISQRT . .s
+  cr 5 ISQRT . .s
+  cr 6 ISQRT . .s
+  cr 7 ISQRT . .s
+  cr 8 ISQRT . .s
+  cr 9 ISQRT . .s
+  cr 1000000000000 ISQRT . .s
+  cr 2000000000000 ISQRT . .s
+  cr 3000000000000 ISQRT . .s
+  cr 4000000000000 ISQRT . .s
+  cr 5000000000000 ISQRT . .s
+  cr 6000000000000 ISQRT . .s
+  cr 7000000000000 ISQRT . .s
+  cr 8000000000000 ISQRT . .s
+  cr 9000000000000 ISQRT . .s
+#+end_src

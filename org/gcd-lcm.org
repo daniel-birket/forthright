@@ -1,0 +1,108 @@
+#+TITLE: GCD & LCM Functions
+#+AUTHOR: Daniel Birket
+#+OPTIONS: toc:nil
+
+This module contains two related functions:
+
+- Greatest Common Divisor (GCD)
+- Least Common Multiple (LCM)
+
+* GCD Greatest Common Divisor
+
+The GCD algorithm finds the common divisor (aka greatest common factor) of
+two integers by the [[https://en.wikipedia.org/wiki/Euclidean_algorithm][Euclidean algorithm]].  It is very concise, with
+only a half-dozen instructions, and can be done easily on the stack alone.
+
+** Input Stack
+
+- n1 : non-zero signed integer
+- n2 : non-zero signed integer
+
+** Output Stack
+
+- n3 : positive signed integer
+
+** Pseudo-code
+
+- n1 = abs(n1)
+- n2 = abs(n2)
+- while n2 <> 0
+  - n1 = n2
+  - n2 = n1 mod n2
+
+** Forth
+
+#+begin_src forth :tangle ../src/gcd-lcm.fs :padlines yes
+  : GCD ( n1 n2 -- n3 )
+    \ n1 : non-zero signed integer
+    \ n2 : non-zero signed integer
+    \ n3 = positive greatest common divisor of n1 and n2
+    ( n1 n2 )
+    BEGIN ( n1 n2, or result 0 )
+      ?DUP ( n1 n2 n2, or result 0 )
+    WHILE ( n2 <> 0 ) ( n1 n2 )
+      TUCK ( n2 n1 n2 )
+      MOD ( n2 { n1 mod n2 } )
+      \ Note: MOD naturally swaps n1 n2 when n1 < n2
+    REPEAT ( result )
+    ABS ( ABS{result} );
+#+end_src
+
+* LCM Least Common Multiple
+
+This function finds the positive [[https://en.wikipedia.org/wiki/Least_common_multiple][least common multiple]] of two integers
+by multiplying the two integers and dividing by the GCD (greatest
+common divisor, above).
+
+The function is too small to require local variables and uses only the stack.
+
+** Input Stack
+
+- n1 : non-zero signed integer
+- n2 : non-zero signed integer
+
+** Output Stack
+
+- n3 : least common multiple, a positive integer
+
+** Pseudo-code
+
+- get GCD{ n1 n2 }
+- scale n1 * n2 / gcd
+
+** Forth
+
+#+begin_src forth :tangle ../src/gcd-lcm.fs :padlines yes
+  : LCM ( n1 n2 -- LCM{ n1 n2 } )
+    \ n1 = non-zero signed integer
+    \ n2 = non-zero signed integer
+    \ n3 = positive least common multiple of non-zero integers n1 and n2
+    ( n1 n2 )
+    2DUP ( n1 n2 n1 n2 )
+    GCD ( n1 n2 gcd{n1 n2} )
+    ,*/ ( { n1 * n2 / gcd{n1 n2} } ) ; \ scale uses double, returns single
+#+end_src
+
+* Tests
+
+#+begin_src forth :tangle ../tst/gcd-lcm.in
+  include ../src/gcd-lcm.fs
+
+  cr 0 0 GCD . .s
+  cr 0 1 GCD . .s
+  cr 1 0 GCD . .s
+  cr 0 7 GCD . .s
+  cr 7 0 GCD . .s
+  cr 49 14 GCD . .s
+  cr 14 49 GCD . .s
+  cr 81 123 GCD . .s
+  cr 123 81 GCD . .s
+  cr 31 37 41 * * 41 43 47 * * .s GCD . .s
+  cr 101 103 107 109 * * * 107 109 113 127 * * * .s GCD . .s
+
+  cr 3 5 LCM . .s
+  cr 9 15 LCM . .s
+  cr 12 42 LCM . .s
+  cr 31 37 41 * * 41 43 47 * * .s LCM . .s
+  cr 101 103 107 109 * * * 107 109 113 127 * * * .s LCM . .s
+#+end_src

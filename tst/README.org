@@ -1,6 +1,8 @@
 * Tests
 
-This folder contains the <name>-test.fs test source files tangled from
-the <name>.org files in the "org" folder.
+This folder contains
 
-It also contains test-runner scripts.
+- test-runner scripts
+- <name>.in test source files tangled from <name>.org
+- <name>.cmp test comparison files that test output must match
+

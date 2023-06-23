@@ -1,0 +1,23 @@
+include ../src/isqrt.fs
+
+cr -9 ISQRT . .s
+cr -1 ISQRT . .s
+cr 0 ISQRT . .s
+cr 1 ISQRT . .s
+cr 2 ISQRT . .s
+cr 3 ISQRT . .s
+cr 4 ISQRT . .s
+cr 5 ISQRT . .s
+cr 6 ISQRT . .s
+cr 7 ISQRT . .s
+cr 8 ISQRT . .s
+cr 9 ISQRT . .s
+cr 1000000000000 ISQRT . .s
+cr 2000000000000 ISQRT . .s
+cr 3000000000000 ISQRT . .s
+cr 4000000000000 ISQRT . .s
+cr 5000000000000 ISQRT . .s
+cr 6000000000000 ISQRT . .s
+cr 7000000000000 ISQRT . .s
+cr 8000000000000 ISQRT . .s
+cr 9000000000000 ISQRT . .s

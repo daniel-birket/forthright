@@ -1,0 +1,19 @@
+include ../src/gcd-lcm.fs
+
+cr 0 0 GCD . .s
+cr 0 1 GCD . .s
+cr 1 0 GCD . .s
+cr 0 7 GCD . .s
+cr 7 0 GCD . .s
+cr 49 14 GCD . .s
+cr 14 49 GCD . .s
+cr 81 123 GCD . .s
+cr 123 81 GCD . .s
+cr 31 37 41 * * 41 43 47 * * .s GCD . .s
+cr 101 103 107 109 * * * 107 109 113 127 * * * .s GCD . .s
+
+cr 3 5 LCM . .s
+cr 9 15 LCM . .s
+cr 12 42 LCM . .s
+cr 31 37 41 * * 41 43 47 * * .s LCM . .s
+cr 101 103 107 109 * * * 107 109 113 127 * * * .s LCM . .s
