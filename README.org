@@ -1,4 +1,23 @@
 * Forthright
 
-This repository contains samples of Forth software that I found
-interesting. You are welcome to use anything you find here.
+This repository contains a few small samples of Forth software that I
+personally found interesting to write to experiment with the language
+and with creating simple automated test scripts. I wrote these scraps
+of code with only a few hours of exposure to Forth. If you have only
+just encountered Forth, you may find these examples briefly
+interesting, but you will frankly find much more useful source code
+elsewhere.
+
+Some more interesting pages about Forth:
+
+- https://en.wikipedia.org/wiki/Forth_(programming_language)
+- https://www.forth.com/starting-forth/
+- https://www.forth.com/resources/forth-web-sites/
+- https://vfxforth.com/flag/index.html
+- https://www.taygeta.com/fsl/sciforth.html
+- https://mathscitech.org/articles/computing-toolkits/forth
+- https://forthmath.blogspot.com/p/charles-moore-at-time-forth-is-computer.html
+- http://forthmath.blogspot.com/2015/11/some-arithmetical-functions.html
+- https://github.com/Lehs/ANS-Forth-libraries/blob/master/forthmath.4th
+- http://lars.nocrew.org/dpans/dpans.htm
+- https://github.com/frno7/forthmath
